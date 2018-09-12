@@ -1,0 +1,31 @@
+<div class="card grad" style="width: 500px; margin : 0 auto;">
+  <div class="card-body">
+    <form style="width: 100%;" [formGroup]="signupForm" novalidate autocomplete="off" (ngSubmit)="performSignup()">
+      <div class="form-group">
+        <label>Enter Username</label>
+        <input class="col-md-12 form-control mt-2" type="text" formControlName="username" placeholder="Username" />
+      </div>
+      <div class="form-group">
+        <label>Enter Email</label>
+        <input class="col-md-12 form-control mt-2" type="email" formControlName="email" placeholder="Email" />
+      </div>
+      <div class="form-group">
+        <label>Enter Password</label>
+        <input class="col-md-12 form-control mt-2" type="password" formControlName="password" placeholder="Password" />
+      </div>
+      <div class="form-group">
+        <label>Enter Mobile Number</label>
+        <input class="col-md-12 form-control mt-2" type="tel" formControlName="mobilenumber" placeholder="Mobile Number" />
+      </div>
+
+      <div class="text-center">
+        <button [disabled]="signupForm.invalid" class="btn btn-outline-success mt-2" style="width: 80%;" type="submit">
+          Sign Up
+        </button>
+      </div>
+      <div class="text-center">
+        <a routerLink="/auth/login">Back To Login</a>
+      </div>
+    </form>
+  </div>
+</div>
