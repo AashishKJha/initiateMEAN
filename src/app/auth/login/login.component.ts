@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Route, Router, ActivatedRoute} from '@angular/router'
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  constructor(private auth: AuthService, private _fb: FormBuilder) {
+  constructor(private auth: AuthService, private _fb: FormBuilder, private route: Router) {
 
   }
 
@@ -27,7 +28,14 @@ export class LoginComponent implements OnInit {
 
   getData() {
     this.auth.getData(this.loginForm.value).subscribe(logResp => {
-      console.log(logResp);
+      if (logResp.token){
+        localStorage.setItem('token', logResp.token);
+        this.route.navigate(['user/profile']);
+      } else {
+        alert("Token Not Found")
+      }
+    }, err => {
+      alert(err.error.message);
     })
   }
 }

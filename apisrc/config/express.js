@@ -14,10 +14,6 @@ import cors from 'cors';
 
 import route from '../index.route';
 
-import dotenv from './config';
-
-dotenv.config();
-
 const app = express();
 
 /**

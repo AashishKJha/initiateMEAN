@@ -1,5 +1,13 @@
-<div class="card grad" style="width: 500px; margin : 0 auto;">
-  <div class="card-body">
+<div class="face">
+  <i class="fas fa-user"></i>
+</div>
+
+<div class="card grad auth">
+  <div class="card-header" style="height: 70px;; background-color:rgb(81, 128, 210);">
+    <p>Sign Up</p>
+  </div>
+  <div class="card-body ">
+    
     <form style="width: 100%;" [formGroup]="signupForm" novalidate autocomplete="off" (ngSubmit)="performSignup()">
       <div class="form-group">
         <label>Enter Username</label>

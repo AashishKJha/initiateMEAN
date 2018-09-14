@@ -10,8 +10,6 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_config2.default.config();
-
-_express2.default.listen(process.env.PORT, function () {
-  console.log('Server is running on '.concat(process.env.PORT));
+_express2.default.listen(_config2.default.port, function () {
+  console.log('Server is running on '.concat(_config2.default.port));
 });

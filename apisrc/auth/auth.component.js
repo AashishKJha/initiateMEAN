@@ -1,8 +1,15 @@
 'strct';
 
+import jwt from 'jsonwebtoken';
+
+import bcrypt from 'bcrypt';
+
+import config from '../config/config';
+
+
 import AuthenticationModel from './auth.model';
 
-const AuthModel = new AuthenticationModel().getAuthSchema();
+export const AuthModel = new AuthenticationModel().getAuthSchema();
 
 export default class Authentication {
     /**
@@ -13,29 +20,40 @@ export default class Authentication {
      */
     login(req, res, next) {
         const userName = req.body.username ? req.body.username : null;
-        const mobileNumber = req.body.mobilenumber ? req.body.mobilenumber : null;
         const passWord = req.body.password ? req.body.password : null;
 
         if (userName && passWord) {
-            AuthModel.find({ username: userName, password: passWord }).select('username password email mobilenumber').exec((err, resp) => {
+            AuthModel.findOne({ username: userName }, (err, resp) => {
+                console.log(err);
+                console.log(resp);
                 if (err) {
                     console.log(err);
-                    res.send('Failed to fetch data');
+                    res.status(404).send({
+                        auth: 'Failed to get username',
+                        message: err
+                    });
+                } else if (resp) {
+                    console.log(resp);
+                    const passwordIsValid = bcrypt.compare(passWord, String(resp.password));
+                    if (!passwordIsValid) {
+                        res.status(401).send({ auth: false, message: 'Password Incorrect' });
+                    } else {
+                        const token = jwt.sign({
+                            username: userName
+                        }, config.jwtSecret);
+                        res.send({
+                            auth: true,
+                            token,
+                            username: userName
+                        });
+                    }
                 } else {
-                    res.send(resp);
+                    res.status(404).send({
+                        auth: false,
+                        message: 'User Not Found'
+                    });
                 }
             });
-        } else if (mobileNumber && passWord) {
-            AuthModel.find({ mobilenumber: mobileNumber, password: passWord }).select('username password email mobilenumber').exec((err, resp) => {
-                if (err) {
-                    console.log(err);
-                    res.send('Failed to fetch data');
-                } else {
-                    res.send(resp);
-                }
-            });
-        } else {
-            res.send('Username Or Mobile Number Missing');
         }
     }
 
@@ -46,14 +64,14 @@ export default class Authentication {
      * @param {*} next - next middle ware call.
      */
     register(req, res, next) {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
         const register = new AuthModel({
             username: req.body.username,
             email: req.body.email,
             mobilenumber: req.body.mobilenumber,
-            password: req.body.password,
+            password: hashedPassword,
         });
-
-        const error = register.validateSync();
 
         register.save((err) => {
             if (err) {

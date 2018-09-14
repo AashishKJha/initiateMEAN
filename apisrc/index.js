@@ -1,8 +1,7 @@
 import app from './config/express';
-import dotenv from './config/config';
+import config from './config/config';
 
-dotenv.config();
 
-app.listen(process.env.PORT, () => {
-  console.log('Server is running on '.concat(process.env.PORT));
+app.listen(config.port, () => {
+  console.log('Server is running on '.concat(config.port));
 });
