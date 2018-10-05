@@ -3,11 +3,14 @@
   <div class="face">
     <i class="fas fa-user"></i>
   </div>
+ 
   <div class="card">
     <div class="card-header">
       <p>User Profile</p>
     </div>
-
+    <div class="text-right">
+      <button style="width:20%;"  class="btn btn-outline-info" routerLink="/user/update-profile">Update Profile</button>
+    </div>
     <div *ngIf="userData" class="card-body  table-responsive">
       <table class="table table-sm">
         <thead class="thead-dark">
