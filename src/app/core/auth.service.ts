@@ -10,17 +10,17 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   getData(reqData): Observable<any> {
-    let reqUrl = "http://localhost:3000/auth/login";
+    let reqUrl = "http://localhost:3000/api/auth/login";
     return this.http.post(reqUrl, reqData);
   }
 
   signup(registerData: any): Observable<any> {
-    let reqUrl = "http://localhost:3000/auth/register";
+    let reqUrl = "http://localhost:3000/api/auth/register";
     return this.http.post(reqUrl, registerData)
   }
 
   getUserProfile(): Observable<any> {
-    let reqUrl = "http://localhost:3000/user/profile";
+    let reqUrl = "http://localhost:3000/api/user/profile";
 
     const token = localStorage.getItem('token');
   

@@ -12,6 +12,9 @@ import morgan from 'morgan';
 
 import cors from 'cors';
 
+import path from 'path';
+
+
 import route from '../index.route';
 
 const app = express();
@@ -26,6 +29,7 @@ app.use(morgan('dev'));
  */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname.concat('../../../dist/meanbasic')));
 
 /**
  * Using Cookie Parser to parse cookie.
@@ -46,10 +50,15 @@ mongoose.connect(process.env.MONGOURL + process.env.DBNAME, { useNewUrlParser: t
     console.log(err);
 });
 
+app.get('/', (req, res) => {
+    console.log('index should run');
+    res.sendFile(path.join(__dirname.concat('../../../dist/meanbasic/index.html')));
+});
+
 /**
  * Initial Route all request will receive here.
  */
-app.use('/', route);
+app.use('/api', route);
 
 /**
  * If route not found it will send status code 404.

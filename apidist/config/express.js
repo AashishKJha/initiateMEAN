@@ -29,6 +29,10 @@ var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 var _index = require('../index.route');
 
 var _index2 = _interopRequireDefault(_index);
@@ -47,6 +51,7 @@ app.use((0, _morgan2.default)('dev'));
  */
 app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
+app.use(_express2.default.static(__dirname.concat('../../../dist/meanbasic')));
 
 /**
  * Using Cookie Parser to parse cookie.
@@ -67,10 +72,15 @@ _mongoose2.default.connect(process.env.MONGOURL + process.env.DBNAME, { useNewUr
   console.log(err);
 });
 
+app.get('/', function (req, res) {
+  console.log('index should run');
+  res.sendFile(_path2.default.join(__dirname.concat('../../../dist/meanbasic/index.html')));
+});
+
 /**
  * Initial Route all request will receive here.
  */
-app.use('/', _index2.default);
+app.use('/api', _index2.default);
 
 /**
  * If route not found it will send status code 404.
