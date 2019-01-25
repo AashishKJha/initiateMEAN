@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Route, Router, ActivatedRoute} from '@angular/router'
 
@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit {
 
   getData() {
     this.auth.getData(this.loginForm.value).subscribe(logResp => {
-      if (logResp.token){
-        localStorage.setItem('token', logResp.token);
+      if (logResp.success && logResp.data.token){
+        localStorage.setItem('token', logResp.data.token);
         this.route.navigate(['user/profile']);
       } else {
         alert("Token Not Found")

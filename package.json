@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "postinstall": "npm run trans && ng build --aot --prod",
-    "start": "node apidist/index.js",
+    "start": "node dist/index.js",
     "build": "ng build",
-    "dev": "concurrently \"nodemon --exec\" \"node -r apidist/index.js\" \"npm run serve\"",
-    "trans": "rm -rf apidist && babel apisrc -d apidist",
+    "dev": "concurrently \"nodemon --exec\" \"node -r dist/index.js\" \"npm run serve\"",
+    "trans": "rm -rf dist && babel server-api -d dist",
     "serve": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
