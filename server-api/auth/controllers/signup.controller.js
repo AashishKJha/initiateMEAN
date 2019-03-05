@@ -15,16 +15,20 @@ class SignupController extends CommonController {
      */
     static register(req, res, next) {
         const register = new AUTHMODEL({
-            username: req.body.username,
+            first_name: req.body.firstName,
+            middle_name: req.body.middleName,
+            last_name: req.body.lastName,
+            date_of_birth: req.body.dateOfBirth,
             email: req.body.email,
-            mobilenumber: req.body.mobilenumber,
-            password: SecurityUtils.getEncryptedPassword(req.body.password),
+            mobile_number: req.body.mobilenumber,
+            password: SecurityUtils.getEncryptedPassword(req.body.password)
         });
 
         register.save((err) => {
+            console.log(err);
             if (err) {
                 res.status(500).send(
-                    new AuthErrorResponse(authConstantsInst.INTERNAL_SERVER_ERROR, 404)
+                    new AuthErrorResponse(err, 500)
                 );
             } else {
                 res.send(new AuthSuccessResponse({

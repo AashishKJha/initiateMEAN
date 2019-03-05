@@ -29,7 +29,7 @@ app.use(morgan('dev'));
  */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname.concat('../../../dist/meanbasic')));
+app.use(express.static('dist/meanbasic'));
 
 /**
  * Using Cookie Parser to parse cookie.
@@ -51,9 +51,9 @@ mongoose.connect(process.env.MONGOURL + process.env.DBNAME, { useNewUrlParser: t
     console.log(err);
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname.concat('../../../dist/meanbasic/index.html')));
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname.concat('../../../dist/meanbasic/index.html')));
+// });
 
 /**
  * Initial Route all request will receive here.

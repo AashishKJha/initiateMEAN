@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { Route, Router, ActivatedRoute} from '@angular/router'
+import {Router} from '@angular/router'
+import { LoginInterface } from '../../interfaces/login-interface';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Route, Router, ActivatedRoute} from '@angular/router'
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  constructor(private auth: AuthService, private _fb: FormBuilder, private route: Router) {
+  constructor(private auth: AuthService<LoginInterface>, private _fb: FormBuilder, private route: Router) {
 
   }
 
@@ -21,20 +22,20 @@ export class LoginComponent implements OnInit {
 
   createLoginForm() {
     this.loginForm = this._fb.group({
-      username: [null, [Validators.required]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
     })
   }
 
   getData() {
-    this.auth.getData(this.loginForm.value).subscribe(logResp => {
+    this.auth.authenticate(this.loginForm.value).subscribe((logResp: any) => {
       if (logResp.success && logResp.data.token){
         localStorage.setItem('token', logResp.data.token);
         this.route.navigate(['user/profile']);
       } else {
         alert("Token Not Found")
       }
-    }, err => {
+    }, (err) => {
       alert(err.error.message);
     })
   }

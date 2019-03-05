@@ -4,6 +4,8 @@ import CurrentUserController from '../controllers/current-user.controller';
 
 const userRouter = express.Router();
 
-userRouter.get('/current-user', CurrentUserController.currentUser);
+userRouter.route('/current-user')
+.get(CurrentUserController.currentUser)
+.post(CurrentUserController.updateUser);
 
 export default userRouter;

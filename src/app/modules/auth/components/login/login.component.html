@@ -8,10 +8,10 @@
       <p>Sign In</p>
     </div>
     <div class="card-body">
-      <form [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="getData()">
+      <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="getData()">
         <div class="form-group">
-          <label>Username</label>
-          <input type="text" class="form-control" formControlName="username" placeholder="Username" />
+          <label>Email</label>
+          <input type="email" class="form-control" formControlName="email" placeholder="Email" />
         </div>
 
         <div class="form-group">

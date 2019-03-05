@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="face">
+    <i class="fas fa-user"></i>
+  </div>
+
+  <div class="card grad auth">
+    <div class="card-header" style="height: 70px;; background-color:rgb(81, 128, 210);">
+      <p>Sign Up</p>
+    </div>
+    <div class="card-body">
+
+      <form style="width: 100%;" [formGroup]="signupForm" novalidate autocomplete="off" (ngSubmit)="performSignup()">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Enter First Name</label>
+            <input class="form-control mt-2" type="text" formControlName="firstName" placeholder="First Name" />
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label>Enter Middle Name</label>
+            <input class="form-control mt-2" type="text" formControlName="middleName" placeholder="Middle Name" />
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label>Enter Last Name</label>
+            <input class="form-control mt-2" type="text" formControlName="lastName" placeholder="Last Name" />
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label>Enter DOB</label>
+            <input class="form-control mt-2" type="date" formControlName="dateOfBirth" placeholder="Date Of Birth" />
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label>Enter Email</label>
+            <input class="form-control mt-2" type="email" formControlName="email" placeholder="Email" />
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Enter Password</label>
+            <input class="form-control mt-2" type="password" formControlName="password" placeholder="Password" />
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Enter Mobile Number</label>
+            <input class="form-control mt-2" type="tel" formControlName="mobilenumber" placeholder="Mobile Number" />
+          </div>
+          </div>
+
+          <div >
+            <div class="text-center">
+              <button [disabled]="signupForm.invalid" class="btn btn-outline-success mt-2" style="width: 80%;" type="submit">
+                Sign Up
+              </button>
+            </div>
+            <div class="text-center">
+              <a routerLink="/auth/login">Back To Login</a>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -11,6 +11,8 @@ export default class CommonConstants {
         this.INTERNAL_SERVER_ERROR = 'Error Occured';
         this.USER_NOT_FOUND = 'User Not Found';
         this.UNAUTHORIZED_ERROR = 'Unauthorized Access';
+        this.USER_USER_TYPE = 'user';
+        this.ADMIN_USER_TYPE = 'admin';
     }
 }
 

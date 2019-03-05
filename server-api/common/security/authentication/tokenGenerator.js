@@ -7,7 +7,6 @@ class TokenService {
         this.userData = userData;
         this.getAccessToken = this.getAccessToken.bind(this);
         this.getRefreshToken = this.getRefreshToken.bind(this);
-        // this.verifyToken = this.verifyToken.bind(this);
     }
 
     getAccessToken() {

@@ -21,11 +21,11 @@ class LoginController extends CommonController {
      * @param {*} next - next middle ware call.
      */
     static login(req, res, next) {
-        const userName = req.body.username ? req.body.username : null;
+        const email = req.body.email ? req.body.email : null;
         const passWord = req.body.password ? req.body.password : null;
 
-        if (userName && passWord) {
-            authModel.findOne({ email: userName }, (err, authResp) => {
+        if (email && passWord) {
+            authModel.findOne({ email }, (err, authResp) => {
                 if (err) {
                     next(new AppException(authConstantsInst.UNAUTHORIZED_ERROR_CODE, new AuthErrorResponse(authConstantsInst.USER_NOT_FOUND)));
                 } else if (authResp) {
@@ -34,7 +34,7 @@ class LoginController extends CommonController {
                         if (bool) {
                             res.status(200).send(new AuthSuccessResponse({
                                 token: new TokeGenerator(true, authResp).getAccessToken(),
-                                username: userName
+                                username: email
                             }));
                         } else {
                             next(new AppException(authConstantsInst.UNAUTHORIZED_ERROR_CODE, new AuthErrorResponse(authConstantsInst.INCORRECT_PASSWORD)));

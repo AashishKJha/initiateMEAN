@@ -1,5 +1,5 @@
 import CommonController from '../../common/controllers/common.controller';
-import authModel from '../../auth/models/auth.model';
+import AuthModel from '../../auth/models/auth.model';
 import TokenVerification from '../../common/security/authorization/verifyToken';
 import AppException from '../../common/errors/common.exception';
 import { commonConstantsInst } from '../../common/constants/common.constants';
@@ -12,7 +12,7 @@ class CurrentUserController extends CommonController {
         tokenVar.getCurrentUser(req).then((user) => {
             if (user.success) {
                 const currentUser = user.data.userData;
-                authModel.find({ email: currentUser.email }, (userError, resp) => {
+                AuthModel.find({ email: currentUser.email }, (userError, resp) => {
                     if (userError) {
                         next(new AppException(commonConstantsInst.UNAUTHORIZED_ERROR_CODE, new ErrorResponse(false, commonConstantsInst.USER_NOT_FOUND)));
                     } else if (!user) {
@@ -24,6 +24,12 @@ class CurrentUserController extends CommonController {
                     }
                 });
             }
+        });
+    }
+
+    static updateUser(req, res, next) {
+        const auth = new AuthModel({
+
         });
     }
 }
