@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit, CommonInterace {
 
   constructor(
     private _fb: FormBuilder,
-    private auth: AuthService<SignupInterface, LoginInterface>) { }
+    private auth: AuthService<SignupInterface>) { }
 
   ngOnInit() {
     this.createForm();

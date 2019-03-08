@@ -30,10 +30,10 @@ export class HttpService<B> implements HttpServiceInterface<B> {
 
   private requestHeaders(options) : any {
     let headersOptions = {};
-    if (!options && sessionStorage.getItem('token')){
+    if (!options && localStorage.getItem('token')){
       headersOptions = {
         headers: new HttpHeaders({
-          "Authorization": sessionStorage.getItem('token'),
+          "Authorization": localStorage.getItem('token'),
           "Content-Type": "application/json"
         })
       }

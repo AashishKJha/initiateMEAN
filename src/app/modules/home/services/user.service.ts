@@ -7,15 +7,15 @@ import { HttpService } from '../../../core/services/http.service';
 })
 export class UserService {
 
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService<any>) { }
 
   getProfile() : Observable<any> {
-    let reqUrl = "api/user/profile";
+    let reqUrl = "api/user/current-user";
     return this.http.get(reqUrl);
   }
 
   updateProfile(profileData : any) : Observable<any> {
-    let reqUrl = "api/user/profile";
+    let reqUrl = "api/user/current-user";
     return this.http.post(reqUrl, profileData);
   }
 }

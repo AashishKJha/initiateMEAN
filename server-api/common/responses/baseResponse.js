@@ -1,5 +1,3 @@
-'strict';
-
 class BaseResponse {
     constructor(success) {
         this.success = success;
