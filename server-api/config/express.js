@@ -2,6 +2,8 @@
 
 import express from 'express';
 
+import http from 'http';
+
 import bodyParser from 'body-parser';
 
 import cookieParser from 'cookie-parser';
@@ -12,59 +14,84 @@ import morgan from 'morgan';
 
 import cors from 'cors';
 
-import path from 'path';
-
-
 import route from '../index.route';
+import ChatServer from '../communication/chat/server';
 
-const app = express();
+export default class AppServer {
+    constructor() {
+        this.app = undefined;
+        this.dbconnect = undefined;
+        // this.server = http.createServer(this.app);
+        this.createServer();
+        this.mergeMiddleWares();
+        this.init();
+        this.createDBConnection();
+    }
 
-/**
- * Using Morgon Logger in Development Mode.
- */
-app.use(morgan('dev'));
+    createServer() {
+        try {
+            this.app = express();
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
-/**
- * Using Body Parser to parse request body.
- */
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('dist/meanbasic'));
+    createDBConnection() {
+        /**
+         * MongoDB Connection Using mongoose.
+         */
+        this.dbconnect = mongoose.connect(process.env.MONGOURL + process.env.DBNAME, { useNewUrlParser: true });
+        this.dbconnect.then((conn) => {
+            console.log(`Successfully connected to MongoDB URL : ${process.env.MONGOURL} and Database : ${process.env.DBNAME}`);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
 
-/**
- * Using Cookie Parser to parse cookie.
- */
-app.use(cookieParser());
+    mergeMiddleWares() {
+        /**
+         * Using Morgon Logger in Development Mode.
+         */
+        this.app.use(morgan('dev'));
 
-/**
- * Using cors for cross origin communications.
- */
-app.use(cors());
+        /**
+         * Using Body Parser to parse request body.
+         */
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(express.static('dist/meanbasic'));
 
+        /**
+         * Using Cookie Parser to parse cookie.
+         */
+        this.app.use(cookieParser());
 
-/**
- * MongoDB Connection Using mongoose.
- */
-mongoose.connect(process.env.MONGOURL + process.env.DBNAME, { useNewUrlParser: true }).then(() => {
-    console.log('Connected to database');
-}).catch((err) => {
-    console.log(err);
-});
+        /**
+         * Using cors for cross origin communications.
+         */
+        this.app.use(cors());
+    }
 
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname.concat('../../../dist/meanbasic/index.html')));
-// });
+    getDBConnection() {
+        return this.dbconnect;
+    }
 
-/**
- * Initial Route all request will receive here.
- */
-app.use('/api', route);
+    init() {
+        const chatServer = new ChatServer(http.Server(this.app));
+        /**
+         * Initial Route all request will receive here.
+         */
+        this.app.use('/api', route);
 
-/**
- * If route not found it will send status code 404.
- */
-app.get('**', (req, res, next) => {
-    res.sendStatus(404);
-});
+        this.app.use('/chat', chatServer.createChatServer);
 
-export default app;
+        this.app.get('/chat/message', chatServer.sendMessage);
+
+        /**
+         * If route not found it will send status code 404.
+         */
+        this.app.get('**', (req, res, next) => {
+            res.sendStatus(404);
+        });
+    }
+}
