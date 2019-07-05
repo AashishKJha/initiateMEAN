@@ -3,20 +3,24 @@
   <div class="face">
     <i class="fas fa-user"></i>
   </div>
-  <div class="card auth">
+  <div class="card auth shadow-lg rounded">
+
     <div class="card-header">
       <p>Sign In</p>
     </div>
+
     <div class="card-body">
       <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="getData()">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" class="form-control" formControlName="email" placeholder="Email" />
-        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" formControlName="email" placeholder="Email" />
+          </div>
 
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" class="form-control" formControlName="password" placeholder="Password" />
+          <div class="col-md-6 form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" formControlName="password" placeholder="Password" />
+          </div>
         </div>
 
         <div class="text-center">

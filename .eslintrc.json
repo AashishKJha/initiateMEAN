@@ -1,5 +1,6 @@
 {
     "extends": "airbnb-base",
+    "parser": "babel-eslint",
     "rules": {
         "no-console": "off",
         "indent": "off",
@@ -24,6 +25,7 @@
     },
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "experimentalDecorators": true
     }
 }
