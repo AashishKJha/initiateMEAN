@@ -3,7 +3,9 @@ import SecurityUtils from '../../common/security/utils/security.utils';
 import AUTHMODEL from '../models/auth.model';
 import { authConstantsInst } from '../constants/auth.constants';
 import AuthErrorResponse from '../responses/auth.errorResponse';
-import AuthSuccessResponse from '../responses/auth.successResponse';
+import SignupDTO from '../dto/signup.dto';
+import ValidationUtils from '../../common/utils/validation.utils';
+import AppException from '../../common/errors/common.exception';
 
 
 class SignupController extends CommonController {
@@ -14,23 +16,32 @@ class SignupController extends CommonController {
      * @param {*} next - next middle ware call.
      */
     static register(req, res, next) {
+        const signupDTO = new SignupDTO(req.body, Date.now(), Date.now());
         const register = new AUTHMODEL({
-            username: req.body.username,
-            email: req.body.email,
-            mobilenumber: req.body.mobilenumber,
-            password: SecurityUtils.getEncryptedPassword(req.body.password),
+            first_name: signupDTO.getFirstName,
+            middle_name: signupDTO.getMiddleName,
+            last_name: signupDTO.getLastName,
+            date_of_birth: signupDTO.getDateOfBirth,
+            email: signupDTO.getEmail,
+            mobile_number: signupDTO.getMobileNumber,
+            password: SecurityUtils.getEncryptedPassword(signupDTO.getPassword)
         });
-
-        register.save((err) => {
+        AUTHMODEL.findOne({ email: signupDTO.getEmail }, (err, resp) => {
             if (err) {
-                res.status(500).send(
-                    new AuthErrorResponse(authConstantsInst.INTERNAL_SERVER_ERROR, 404)
-                );
+                next(new AppException(authConstantsInst.UNAUTHORIZED_ERROR_CODE,
+                    new AuthErrorResponse(ValidationUtils.getError(err))));
+            } else if (resp) {
+                next(new AppException(authConstantsInst.UNAUTHORIZED_ERROR_CODE,
+                    new AuthErrorResponse(authConstantsInst.USER_ALREADY_EXIST)));
             } else {
-                res.send(new AuthSuccessResponse({
-                    success: true,
-                    message: req.body.email.concat(authConstantsInst.SUCCESSFULLY_REGISTERED)
-                }));
+                register.save((saveErr) => {
+                    if (saveErr) {
+                        next(new AppException(authConstantsInst.UNAUTHORIZED_ERROR_CODE,
+                            new AuthErrorResponse(ValidationUtils.getError(saveErr))));
+                    } else {
+                        res.sendStatus(authConstantsInst.OK);
+                    }
+                });
             }
         });
     }

@@ -22,11 +22,13 @@ if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
 
-const config = {
-    env: envVars.NODE_ENV,
-    port: envVars.PORT,
-    jwtSecret: envVars.JWT_SECRET,
-};
+export class AppConfig {
+    constructor() {
+        this.env = envVars.NODE_ENV;
+        this.port = envVars.PORT;
+        this.jwtSecret = envVars.JWT_SECRET;
+    }
+}
 
 
-export default config;
+export default new AppConfig();

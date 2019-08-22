@@ -3,21 +3,18 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 import { AppRouringModule } from './app-routing.module';
-
-import { AppComponent } from './app.component';
+import { AppComponent } from './components/app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent  ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     AppRouringModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-  ],
+    HttpClientModule  ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import CommonModel from '../../common/models/common.model';
+import { commonConstantsInst } from '../../common/constants/common.constants';
 
 class AuthModel extends CommonModel {
     /**
@@ -7,17 +8,54 @@ class AuthModel extends CommonModel {
      */
     constructor() {
         super(Date.now(), Date.now());
-        this.username = { type: String, required: true };
-        this.email = { type: String, required: true, unique: true };
-        this.mobilenumber = { type: String, required: true, unique: true };
-        this.password = { type: String, required: true };
+        this.email = {
+            type: String,
+            required: true,
+            maxlength: 50,
+            unique: true
+        };
+        this.mobile_number = {
+            type: String,
+            required: true,
+            unique: true,
+            minlength: 10,
+            maxlength: 10
+        };
+        this.password = {
+            type: String,
+            required: true,
+        };
+        this.first_name = {
+            type: String,
+            required: true,
+            maxlength: 30
+        };
+        this.middle_name = {
+            type: String,
+            required: false,
+            maxlength: 30
+        };
+        this.last_name = {
+            type: String,
+            required: true,
+            maxlength: 30
+        };
+        this.date_of_birth = {
+            type: Date,
+            required: false
+        };
+        this.user_type = {
+            type: String,
+            required: true,
+            default: commonConstantsInst.USER_USER_TYPE
+        };
     }
 
     /**
      * Method is used to return authentication model.
      */
     getAuthModel(auth) {
-        return mongoose.model('AuthModel', new mongoose.Schema(auth));
+        return mongoose.model('UserModel', new mongoose.Schema(auth));
     }
 }
 
